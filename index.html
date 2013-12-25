@@ -8,9 +8,12 @@
 	});
 
 	$(function () {	 
+		var typingTimer;
 		$('#ban-content').bind('input propertychange', function(){
-			console.log("changed");
-			socket.emit('commit', { data: $("#ban-content").val() });
+			clearTimeout(typingTimer);
+			typingTimer = setTimeout(function(){
+				socket.emit('commit', { data: $("#ban-content").val() });
+			}, 1500);			
 		});
 	});
   
