@@ -1,0 +1,20 @@
+<script src="/socket.io/socket.io.js"></script>
+<script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+
+<script>
+	var socket = io.connect('http://localhost:8080');
+	socket.on('update', function(message){	
+		$('#ban-content').val(message);
+	});
+
+	$(function () {	 
+		$('#ban-content').bind('input propertychange', function(){
+			console.log("changed");
+			socket.emit('commit', { data: $("#ban-content").val() });
+		});
+	});
+  
+</script>
+
+<textarea rows="25" cols="100" id="ban-content"/>
+
