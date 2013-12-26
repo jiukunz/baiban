@@ -13,7 +13,7 @@
 			clearTimeout(typingTimer);
 			typingTimer = setTimeout(function(){
 				socket.emit('commit', { data: $("#ban-content").val() });
-			}, 1500);			
+			}, 700);
 		});
 	});
   
