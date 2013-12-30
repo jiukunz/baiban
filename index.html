@@ -2,7 +2,7 @@
 <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
 
 <script>
-	var socket = io.connect('http://localhost:8080');
+	var socket = io.connect('http://baiban.heroku.com');
 	socket.on('update', function(message){	
 		$('#ban-content').val(message);
 	});
