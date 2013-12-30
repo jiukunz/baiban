@@ -1,13 +1,21 @@
 {
     "name": "baiban",
-    "version": "0.0.1",
+    "description": "Toolkit to make communication easier than before",
+    "version": "0.1.0",
+    "author": "J.K <jiukunz@gmail.com>",
     "scripts": {
         "start": "node server.js"
     },
     "dependencies": {
-        "socket.io":""
+        "socket.io":"",
+        "express":"",
+        "jade":""
     },
+    "keywords": [
+    	"baiban"
+    ],
     "engines": {
     	"node": "0.10.x"
-  	}
+  	},
+  	"repository": "git://github.com/jiukunz/baiban"
 }
