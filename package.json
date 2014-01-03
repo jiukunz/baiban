@@ -10,6 +10,7 @@
         "socket.io":"",
         "express":"",
         "jade":"",
+        "mongodb":"",
         "mongoose":"",
         "mousetrap":""
     },

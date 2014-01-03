@@ -23,7 +23,9 @@ app.use(express.session());
 app.use(app.router);
 app.use(express.static(path.join(__dirname, 'public')));
 
-mongoose.connect('mongodb://localhost/baiban');
+var mongoUri = process.env.MONGOLAB_URI || process.env.MONGOHQ_URL || 'mongodb://localhost/baiban';
+
+mongoose.connect(mongoUri);
 
 var Room = mongoose.model('Room', { name: String, data: String });
 
