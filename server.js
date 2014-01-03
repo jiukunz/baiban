@@ -1,14 +1,12 @@
 var express = require('express');
-var routes = require('./routes');
-var room = require('./routes/room');
 var http = require('http');
 var path = require('path');
 
 var app = express()
-	, http = require('http')
-  , server = http.createServer(app)
-  , io = require('socket.io').listen(server)
-  , fs = require('fs')
+    , http = require('http')
+    , server = http.createServer(app)
+    , io = require('socket.io').listen(server)
+    , fs = require('fs')
 
 
 app.set('port', process.env.PORT || 8080);
@@ -27,20 +25,26 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // development only
 if ('development' == app.get('env')) {
-  app.use(express.errorHandler());
+    app.use(express.errorHandler());
 }
 
-server.listen(app.get('port'), function(){
-  console.log('Express server listening on port ' + app.get('port'));
+server.listen(app.get('port'), function () {
+    console.log('Express server listening on port ' + app.get('port'));
 });
 
 
 io.sockets.on('connection', function (socket) {
 
-  socket.on('commit', function (message){
-    console.log(message.data);
-    socket.broadcast.emit('update', message.data);  
-  });
+    socket.on('join room', function (room) {
+        socket.set('room', room, function () {
+            console.log('RoomName: ' + room + ' Opened');
+        });
+        socket.join(room);
+    })
+
+    socket.on('commit', function (message, room) {
+        io.sockets.in(message.room).emit('update', message.data);
+    });
 });
 // function handler (req, res) {
 //   fs.readFile(__dirname + '/index.html',
@@ -55,6 +59,11 @@ io.sockets.on('connection', function (socket) {
 //   });
 // }
 
-app.get('/', routes.index);
-app.get('/:roomName', room.open);
+app.get('/', function (req, res) {
+    res.render('index', { title: 'Express' });
+});
+
+app.get('/:roomName', function (req, res) {
+    res.render('room', { roomName: req.params.roomName });
+});
 
