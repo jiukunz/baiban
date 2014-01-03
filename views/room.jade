@@ -7,6 +7,8 @@ html(lang="en")
             #{roomName}
         script(src="/socket.io/socket.io.js")
         script(src="http://code.jquery.com/jquery-1.10.1.min.js")
+        script(src="javascripts/mousetrap.min.js")
+        script(src="javascripts/mousetrap-global-bind.min.js")
         script(type='text/javascript').
             var roomName = $("#title").text();
             var socket = io.connect('http://localhost:8080');
@@ -26,6 +28,24 @@ html(lang="en")
                         socket.emit('commit', { data: $("#ban-content").val(), room: roomName });
                     }, 700);
                 });
+            });
+
+            function saveMessage(e){
+                if (e.preventDefault) {
+                    e.preventDefault();
+                } else {
+                    // internet explorer
+                    e.returnValue = false;
+                }
+                socket.emit('saveMessage', { data: $("#ban-content").val(), roomName: roomName });
+            }
+
+            Mousetrap.bindGlobal('command+s', function(e) {
+                saveMessage(e);
+            });
+
+            Mousetrap.bindGlobal('ctrl+s', function(e) {
+                saveMessage(e);
             });
     body
         textarea#ban-content(rows='25', cols='100')

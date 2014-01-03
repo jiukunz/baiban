@@ -1,7 +1,7 @@
 白板
 
-1. 能够根据不同的url来建立不同的连接
-2. 能够通过快捷键进行数据存储(如Command + S, windows中的Ctrl + S)
+1. 能够根据不同的url来建立不同的连接 DONE
+2. 能够通过快捷键进行数据存储(如Command + S, windows中的Ctrl + S) DONE
 3. 能够在输入时undo redo
 
 express 

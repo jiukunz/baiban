@@ -9,7 +9,9 @@
     "dependencies": {
         "socket.io":"",
         "express":"",
-        "jade":""
+        "jade":"",
+        "mongoose":"",
+        "mousetrap":""
     },
     "keywords": [
     	"baiban"

@@ -1,6 +1,7 @@
 var express = require('express');
 var http = require('http');
 var path = require('path');
+var mongoose = require('mongoose');
 
 var app = express()
     , http = require('http')
@@ -22,6 +23,9 @@ app.use(express.session());
 app.use(app.router);
 app.use(express.static(path.join(__dirname, 'public')));
 
+mongoose.connect('mongodb://localhost/baiban');
+
+var Room = mongoose.model('Room', { name: String, data: String });
 
 // development only
 if ('development' == app.get('env')) {
@@ -35,15 +39,36 @@ server.listen(app.get('port'), function () {
 
 io.sockets.on('connection', function (socket) {
 
-    socket.on('join room', function (room) {
-        socket.set('room', room, function () {
-            console.log('RoomName: ' + room + ' Opened');
+    socket.on('join room', function (roomName) {
+        socket.set('room', roomName, function () {
+            console.log('RoomName: ' + roomName + ' Opened');
         });
-        socket.join(room);
-    })
+        socket.join(roomName);
+        Room.findOne({name: roomName}, function (err, room) {
+            if (!err) {
+                if (room) {
+                    io.sockets.in(roomName).emit('update', room.data);
+                }
+            }
+        });
 
-    socket.on('commit', function (message, room) {
+    });
+
+    socket.on('commit', function (message) {
         io.sockets.in(message.room).emit('update', message.data);
+    });
+
+    socket.on('saveMessage', function (message) {
+        Room.findOne({name: message.roomName}, function (err, room) {
+            if (!err) {
+                if (!room) {
+                    room = new Room();
+                    room.name = message.roomName;
+                }
+                room.data = message.data;
+                room.save();
+            }
+        });
     });
 });
 // function handler (req, res) {
@@ -58,6 +83,7 @@ io.sockets.on('connection', function (socket) {
 //     res.end(data);
 //   });
 // }
+
 
 app.get('/', function (req, res) {
     res.render('index', { title: 'Express' });
