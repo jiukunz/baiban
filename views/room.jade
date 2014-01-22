@@ -3,12 +3,12 @@ html(lang="en")
     head
         title.
             BaiBan-#{roomName}
-        h1#title.
-            #{roomName}
         script(src="/socket.io/socket.io.js")
-        script(src="http://code.jquery.com/jquery-1.10.1.min.js")
+        script(src="javascripts/jquery-1.10.1.min.js")
         script(src="javascripts/mousetrap.min.js")
         script(src="javascripts/mousetrap-global-bind.min.js")
+        link(rel="stylesheet", href="stylesheets/bootstrap.min.css")
+        link(rel="stylesheet", href="stylesheets/style.css")
         script(type='text/javascript').
             var roomName = $("#title").text();
             var socket = io.connect('http://baiban.herokuapp.com');
@@ -41,11 +41,23 @@ html(lang="en")
             }
 
             Mousetrap.bindGlobal('command+s', function(e) {
+                $(".alert").fadeIn(1000);
+                $(".alert").fadeOut(1000);
                 saveMessage(e);
             });
 
             Mousetrap.bindGlobal('ctrl+s', function(e) {
+                $(".alert").fadeIn(1000);
+                $(".alert").fadeOut(1000);
                 saveMessage(e);
             });
     body
-        textarea#ban-content(rows='25', cols='100')
+        h1.title.
+            #{roomName}
+        #page-content
+            .promp.
+                Command+S | Ctrl+S For Saving Your Message.
+            .alert.alert-success
+                strong Save Successfully!
+            textarea#ban-content.form-control(rows='25')
+            
