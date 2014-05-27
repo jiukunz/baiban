@@ -10,7 +10,7 @@ html(lang="en")
         link(rel="stylesheet", href="stylesheets/bootstrap.min.css")
         link(rel="stylesheet", href="stylesheets/style.css")
         script(type='text/javascript').
-            var roomName = $("#title").text();
+            var roomName = $(".title").text();
             var socket = io.connect('http://baiban.herokuapp.com');
             socket.on('connect', function (data) {
                  socket.emit('join room', roomName );
